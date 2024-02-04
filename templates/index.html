@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hate-Speech Identificator</title>
+        <link rel="stylesheet" href="reset.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            
+            <div class="container">
+                <h1>Hate-Speech Detector</h1>
+                <nav>
+                    <ul>
+                        <li><a href="direccion.html">Home</a></li>
+                        <li><a href="direccion.html">Detector</a></li>
+                        <li><a href="direccion.html">Otra cosa👍</a></li>
+                        <!--button id="menuButton">☰</button-->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <div>
+                <label class="label-tweet" for="tweetInput">Ingresa tu tweet:</label>
+                <input type="text" id="tweetInput" placeholder="Escribe tu tweet aqui" class="input_tweet">
+                
+                <label class="label-results" for="tweetInput">Resultado:</label>
+                <input type="text" id="mlResults">
+                
+                <button id="evaluateButton">Evaluar Hate Speech</button>
+                <div id="resultado"></div>
+            </div>
+        </main>
+    
+        <script src="app.js" defer></script>
+
+    </body>
+
+</html>
