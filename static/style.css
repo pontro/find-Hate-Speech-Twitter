@@ -1,0 +1,100 @@
+header{
+    background-color: #34353b;
+    padding: 80px 0;
+}
+
+.container{
+    width: 940px;
+    position: relative;
+    margin: 0 auto;
+    display: inline;
+}
+
+h1{
+    font-family: sans-serif;
+    font-size: 50px;
+    color: #ffffff;
+    padding-left: 20px;
+    padding-top: 10px;
+    vertical-align: middle;
+}
+
+nav{
+    position: absolute;
+    vertical-align: middle;
+    top: 30px;
+    right: 0;
+    text-align: center;
+    margin: auto;
+    padding-right: 15px;
+}
+
+nav li{
+    display: inline;
+    margin: 0 0 0 15px;
+}
+
+nav a{
+    text-transform: uppercase;
+    color: #ffffff;
+    font-size: 22px;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+nav a:hover{
+    color: #7b8082;
+}
+
+/** boton rarete
+#menuButton{
+    color: white;
+    background-color: #34353b;
+    font-size: 40px;
+    width: 60px;
+    height: 60px;
+}**/
+
+.label-tweet{
+    font: 100 25px arial;
+}
+
+#tweetInput{
+    display: block;
+    margin: 0 0 20px;
+    padding: 100px 25px;
+    width: 50%;
+    box-sizing: border-box;
+    border: 1px solid rgb(197, 196, 196);
+    border-radius: 5px;
+    font: 700 24px sans-serif;
+}
+
+.label-results{
+    font: 150 25px arial;
+}
+
+#mlResults{
+    display: block;
+    margin: 0 0 20px;
+    padding: 100px 25px;
+    width: 50%;
+    box-sizing: border-box;
+    border: 1px solid rgb(197, 196, 196);
+    border-radius: 5px;
+    text-align: left;
+}
+
+#evaluateButton{
+    font: 100 20px arial;
+    width: 300px;
+    height: 50px;
+    border: 1px #b2b2b2;
+    border-radius: 25px;
+    background-color: #b2b2b2;
+}
+
+#evaluateButton:hover{
+    background-color: #dedede;
+    border: 1px solid #b2b2b2;
+}
