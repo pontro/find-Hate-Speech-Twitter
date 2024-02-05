@@ -13,3 +13,5 @@ document.addEventListener("DOMContentLoaded", function () {
         mainNav.style.display = (mainNav.style.display === 'block') ? 'none' : 'block';
     });
 });
+
+console.log('JavaScript is working!');

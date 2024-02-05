@@ -6,10 +6,13 @@ import string
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
-from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
+from flask import Flask, render_template
+
+app = Flask(__name__)
 
 def preprocess_text(text):
     # Convert to lowercase
@@ -34,44 +37,58 @@ def preprocess_text(text):
 
     return preprocessed_text
 
-dataframe = pd.read_csv('train.csv')
+def main():
+    dataframe = pd.read_csv('train.csv')
 
-# Features (tweets)
-x = dataframe['tweet']
-# Target columns
-y = dataframe['count']
+    # Features (tweets)
+    x = dataframe['tweet']
+    # Target columns
+    y = dataframe['count']
 
-# Text preprocessing
-dataframePrePros = [preprocess_text(document) for document in x]
+    # Text preprocessing
+    dataframePrePros = [preprocess_text(document) for document in x]
 
-# Create the vectorizer
-vectorizer = TfidfVectorizer(stop_words=None, token_pattern=r'\b\w+\b|@\w+|\#\w+')
-# Fit and transform the text data
-x_vectorized = vectorizer.fit_transform(dataframePrePros)
+    # Create the vectorizer
+    vectorizer = TfidfVectorizer(stop_words=None, token_pattern=r'\b\w+\b|@\w+|\#\w+')
+    # Fit and transform the text data
+    x_vectorized = vectorizer.fit_transform(dataframePrePros)
 
-x_train, x_test, y_train, y_test = train_test_split(x_vectorized, y, test_size=0.2, random_state=49)
+    x_train, x_test, y_train, y_test = train_test_split(x_vectorized, y, test_size=0.2, random_state=49)
 
-clf = RandomForestClassifier(n_estimators=20)
-clf = clf.fit(x_train, y_train)
-y_pred = clf.predict(x_test)
+    clf = RandomForestClassifier(n_estimators=20)
+    clf = clf.fit(x_train, y_train)
+    y_pred = clf.predict(x_test)
 
-results_df = pd.DataFrame({
-    'Tweet': x_test,
-    'Count': y_test,
-    'Count pred': y_pred 
-})
-print(results_df)
+    results_df = pd.DataFrame({
+        'Tweet': x_test,
+        'Count': y_test,
+        'Count pred': y_pred 
+    })
+    #print(results_df)
 
-accuracy = accuracy_score(y_test, y_pred)
-print(f"Accuracy of hate speech: {accuracy}")
+    accuracy = accuracy_score(y_test, y_pred)
+    #print(f"Accuracy of hate speech: {accuracy}")
 
-import matplotlib.pyplot as plt
-from sklearn.tree import plot_tree
+    return(y_pred[0])
+
+
 
 # Select one tree from the forest (e.g., the first tree)
-tree_to_visualize = clf.estimators_[0]
+#tree_to_visualize = clf.estimators_[0]
 
 # Plot the selected tree
-plt.figure(figsize=(16, 12))
-plot_tree(tree_to_visualize, feature_names=vectorizer.get_feature_names_out(), filled=True, rounded=True, class_names=True, max_depth=3)
-plt.show()
+#plt.figure(figsize=(16, 12))
+#plot_tree(tree_to_visualize, feature_names=vectorizer.get_feature_names_out(), filled=True, rounded=True, class_names=True, max_depth=3)
+#plt.show()
+
+
+@app.route('/', methods=['GET'])
+def predict():
+    results = main()
+    #results = results_df.to_dict(orient='records')
+
+    return render_template('index.html', results=results)  
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
