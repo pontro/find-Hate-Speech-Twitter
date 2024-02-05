@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
 
 def preprocess_text(text):
     # Convert to lowercase
@@ -31,7 +33,7 @@ def preprocess_text(text):
     preprocessed_text = ' '.join(tokens)
 
     return preprocessed_text
-# Load the data
+
 dataframe = pd.read_csv('train.csv')
 
 # Features (tweets)
@@ -47,31 +49,29 @@ vectorizer = TfidfVectorizer(stop_words=None, token_pattern=r'\b\w+\b|@\w+|\#\w+
 # Fit and transform the text data
 x_vectorized = vectorizer.fit_transform(dataframePrePros)
 
-x_train, x_test, y_train, y_test = train_test_split(x_vectorized, y, test_size=0.2, random_state=40)
+x_train, x_test, y_train, y_test = train_test_split(x_vectorized, y, test_size=0.2, random_state=49)
 
-# Train an SVM classifier 
-classifier = SVC(kernel='linear')
-classifier.fit(x_train, y_train)
+clf = RandomForestClassifier(n_estimators=20)
+clf = clf.fit(x_train, y_train)
+y_pred = clf.predict(x_test)
 
-# Make predictions on the testing set
-y_pred = classifier.predict(x_test)
-
-#unvectorize x
-x_test_unvectorized = vectorizer.inverse_transform(x_test)
-
-# Create a DataFrame 
 results_df = pd.DataFrame({
-    'Tweet': [' '.join(tokens) for tokens in x_test_unvectorized],
+    'Tweet': x_test,
     'Count': y_test,
     'Count pred': y_pred 
 })
-
-# Print or display the results DataFrame
 print(results_df)
 
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Accuracy of hate speech: {accuracy}")
 
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
 
+# Select one tree from the forest (e.g., the first tree)
+tree_to_visualize = clf.estimators_[0]
 
-
+# Plot the selected tree
+plt.figure(figsize=(16, 12))
+plot_tree(tree_to_visualize, feature_names=vectorizer.get_feature_names_out(), filled=True, rounded=True, class_names=True, max_depth=3)
+plt.show()
